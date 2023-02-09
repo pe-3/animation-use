@@ -1,14 +1,12 @@
 <template>
     <div>
         <button @click="shuffle">shuffle</button>
-        <button @click="add">add</button>
-        <button @click="remove">remove</button>
-        <transition-group name="list-complete" tag="ul">
-            <li 
-                v-for="num in items" 
-                :key="num"
-                class="list-complete-item"
-            >{{ num }}</li>
+        <transition-group name="cell" tag="div" class="container">
+            <div 
+                v-for="item in items" 
+                :key="item.id"
+                class="cell"
+            >{{ item.number }}</div>
         </transition-group>
     </div>
 </template>
@@ -30,7 +28,12 @@ export default {
     name: 'animate-com',
     data() {
         return {
-            items: [1,2,3,4,5,6,7,8,9],
+            items: Array.apply(null, { length: 81 }).map(function(_, index) {
+                return {
+                    id: index,
+                    number: (index % 9) + 1
+                };
+            }),
             nextNum: 10
         }
     },
@@ -67,4 +70,31 @@ export default {
 .list-complete-item
     display inline-block
     margin-right 10px
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 238px;
+    margin-top: 10px;
+}
+.cell {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #aaa;
+    margin-right: -1px;
+    margin-bottom: -1px;
+}
+.cell:nth-child(3n) {
+    margin-right: 0;
+}
+.cell:nth-child(27n) {
+    margin-bottom: 0;
+}
+.cell-move {
+    transition: transform 1s;
+}
+      
 </style>
